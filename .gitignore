@@ -1,0 +1,5 @@
+/doc
+wsl-list.raw
+__pycache__/
+*.pyc
+*.pyc.*

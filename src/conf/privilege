@@ -1,0 +1,8 @@
+{
+  "defaults": {
+    "run-as": "package"
+  },
+  "username": "sc-vfio-sensor-bridge",
+  "groupname": "synocommunity",
+  "join-groupname": "http"
+}

@@ -1,0 +1,21 @@
+[agent]
+virtio_port = "/dev/virtio-ports/org.vfio_sensor_bridge.0"
+scan_root = "/sys/class/hwmon"
+hwmon_name_template = "Synology"
+rescan_seconds = 10
+sample_seconds = 1
+heartbeat_seconds = 5
+
+[lsi_hba]
+enabled = false
+devices = ["/dev/mptctl", "/dev/mpt2ctl", "/dev/mpt3ctl"]
+max_ioc = 16
+label_template = "{chip}"
+
+[smartctl]
+enabled = true
+command = "/bin/smartctl"
+device_globs = ["/dev/sd*", "/dev/sata*", "/dev/nvme*"]
+timeout_seconds = 10
+poll_seconds = 30
+label_template = "{device}: {model} {serial}"
