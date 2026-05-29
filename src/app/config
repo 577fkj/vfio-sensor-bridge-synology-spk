@@ -1,0 +1,25 @@
+{
+  "VfioSensorBridge.js": {
+    "VfioSensorBridge.AppInstance": {
+      "type": "app",
+      "title": "app:app_name",
+      "version": "0.1",
+      "icon": "images/vfio-sensor-bridge-{0}.png",
+      "texts": "texts",
+      "allowMultiInstance": false,
+      "allUsers": false,
+      "grantPrivilege": "none",
+      "advanceGrantPrivilege": false,
+      "appWindow": "VfioSensorBridge.AppWindow",
+      "depend": [
+        "VfioSensorBridge.AppWindow"
+      ]
+    },
+    "VfioSensorBridge.AppWindow": {
+      "type": "lib",
+      "title": "app:app_name",
+      "icon": "images/vfio-sensor-bridge-{0}.png",
+      "texts": "texts"
+    }
+  }
+}

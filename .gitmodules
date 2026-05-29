@@ -1,0 +1,3 @@
+[submodule "vfio-sensor-bridge"]
+	path = cross/vfio-sensor-bridge
+	url = https://github.com/577fkj/vfio-sensor-bridge

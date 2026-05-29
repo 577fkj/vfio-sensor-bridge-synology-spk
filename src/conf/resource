@@ -1,0 +1,30 @@
+{
+  "webservice": {
+    "services": [
+      {
+        "service": "vfio-sensor-bridge",
+        "display_name": "VFIO Sensor Bridge Agent",
+        "type": "static",
+        "root": "vfio-sensor-bridge",
+        "icon": "app/images/vfio-sensor-bridge-{0}.png"
+      }
+    ],
+    "migrate": {
+      "root": [
+        {
+          "old": "sc-vfio-sensor-bridge",
+          "new": "sc-vfio-sensor-bridge"
+        }
+      ]
+    },
+    "pkg_dir_prepare": [
+      {
+        "source": "/var/packages/vfio-sensor-bridge/target/app",
+        "target": "vfio-sensor-bridge",
+        "mode": "0755",
+        "group": "http",
+        "user": "sc-vfio-sensor-bridge"
+      }
+    ]
+  }
+}

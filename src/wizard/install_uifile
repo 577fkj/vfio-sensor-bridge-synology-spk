@@ -1,0 +1,36 @@
+[
+  {
+    "step_title": "Prerequisites",
+    "items": [
+      {
+        "desc": "<b>SimplePermissionManager</b> must be installed and activated before starting this package.<br><br>VFIO Sensor Bridge Agent requires root-level access to the virtio-serial device (<code>/dev/virtio-ports/org.vfio_sensor_bridge.0</code>). SimplePermissionManager provides the necessary privilege elevation via <code>spm-exec</code>.<br><br>If SimplePermissionManager is not yet activated, install it from the Package Center, open it, and click the <b>Active</b> button before starting this package."
+      }
+    ]
+  },
+  {
+    "step_title": "Basic Configuration",
+    "items": [
+      {
+        "type": "textfield",
+        "desc": "Virtio-serial port path",
+        "subitems": [
+          {
+            "key": "wizard_virtio_port",
+            "desc": "Virtio Port Path",
+            "defaultValue": "/dev/virtio-ports/org.vfio_sensor_bridge.0",
+            "validator": {
+              "allowBlank": false,
+              "regex": {
+                "expr": "/^\\/dev\\//",
+                "errorText": "Path must start with /dev/"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "desc": "This is the virtio-serial device created by QEMU on the Proxmox VE host. Change this only if you configured a custom channel name in the PVE VM settings."
+      }
+    ]
+  }
+]

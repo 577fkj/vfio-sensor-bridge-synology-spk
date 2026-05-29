@@ -1,0 +1,64 @@
+name: Build SPK
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          - x64-7.2
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Checkout spksrc and Docker image
+        run: |
+          git clone --depth=1 https://github.com/SynoCommunity/spksrc.git "${RUNNER_TEMP}/spksrc"
+          docker pull ghcr.io/synocommunity/spksrc
+
+      - name: Restore spksrc download cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/spksrc/distrib
+          key: ${{ runner.os }}-spksrc-${{ matrix.target }}-${{ hashFiles('Makefile', 'cross/agent-linux/**', 'cross/vfio-sensor-bridge/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-spksrc-${{ matrix.target }}-
+
+      - name: Build package
+        run: |
+          mkdir -p packages
+          printf 'SHELL := /bin/bash\n' > "${RUNNER_TEMP}/spksrc/local.mk"
+          docker run --rm \
+            -v "${RUNNER_TEMP}/spksrc:/spksrc" \
+            -v "${GITHUB_WORKSPACE}:/spksrc/spk/vfio-sensor-bridge" \
+            -v "${GITHUB_WORKSPACE}/packages:/spksrc/packages" \
+            -w /spksrc/spk/vfio-sensor-bridge \
+            ghcr.io/synocommunity/spksrc \
+            bash -lc 'bash scripts/setup-spksrc.sh && make "arch-${{ matrix.target }}"'
+
+      - name: Upload package
+        uses: actions/upload-artifact@v7
+        with:
+          name: vfio-sensor-bridge-${{ matrix.target }}
+          path: packages/*.spk
+          if-no-files-found: error
+          retention-days: 15
+          archive: false
+
+      - name: Release package
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: packages/*.spk

@@ -1,0 +1,36 @@
+[
+  {
+    "step_title": "前提条件",
+    "items": [
+      {
+        "desc": "在启动本套件之前，必须先安装并激活 <b>SimplePermissionManager</b>。<br><br>VFIO Sensor Bridge Agent 需要以 root 权限访问 virtio-serial 设备（<code>/dev/virtio-ports/org.vfio_sensor_bridge.0</code>），SimplePermissionManager 通过 <code>spm-exec</code> 提供所需的权限提升。<br><br>如果 SimplePermissionManager 尚未激活，请先从套件中心安装，打开后点击 <b>激活</b> 按钮，再启动本套件。"
+      }
+    ]
+  },
+  {
+    "step_title": "基本配置",
+    "items": [
+      {
+        "type": "textfield",
+        "desc": "Virtio 串口设备路径",
+        "subitems": [
+          {
+            "key": "wizard_virtio_port",
+            "desc": "Virtio 端口路径",
+            "defaultValue": "/dev/virtio-ports/org.vfio_sensor_bridge.0",
+            "validator": {
+              "allowBlank": false,
+              "regex": {
+                "expr": "/^\\/dev\\//",
+                "errorText": "路径必须以 /dev/ 开头"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "desc": "此路径由 Proxmox VE 主机上的 QEMU 创建。仅在 PVE 虚拟机设置中配置了自定义通道名称时才需修改。"
+      }
+    ]
+  }
+]

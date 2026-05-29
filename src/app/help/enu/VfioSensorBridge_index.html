@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>VFIO Sensor Bridge Agent</title>
+  <link rel="stylesheet" type="text/css" href="../../help.css">
+</head>
+<body>
+<h1>VFIO Sensor Bridge Agent</h1>
+<p>
+  Bridges hardware sensor data (temperature, fan speed, voltage, power) from
+  PCI pass-through virtual machines back to the Proxmox VE host via
+  virtio-serial. Sensors become visible to <code>sensors</code>,
+  <code>fancontrol</code>, and the PVE monitoring dashboard.
+</p>
+
+<h2>Requirements</h2>
+<ul>
+  <li><strong>SimplePermissionManager</strong> — must be installed and activated.</li>
+  <li>The Synology NAS must run as a KVM/QEMU virtual machine on a Proxmox VE host.</li>
+  <li>The PVE host must have <code>vfio-sensor-bridge-hostd</code> and the
+      <code>vsb_hwmon.ko</code> kernel module installed.</li>
+  <li>The QEMU VM configuration must include a virtio-serial channel named
+      <code>org.vfio_sensor_bridge.0</code>.</li>
+</ul>
+
+<h2>Configuration Tabs</h2>
+
+<h3>Status</h3>
+<p>Shows whether the package service and the agent process are running, whether
+SimplePermissionManager is active, and whether the virtio device is present.
+Use the Start/Stop/Restart buttons to control the agent process from this page.</p>
+
+<h3>Agent</h3>
+<p>Basic agent settings:</p>
+<ul>
+  <li><strong>Virtio Port</strong> — path to the virtio-serial device.</li>
+  <li><strong>Hwmon Scan Root</strong> — base directory for hwmon enumeration.</li>
+  <li><strong>Rescan Interval</strong> — how often (seconds) to re-scan for new sensors.</li>
+  <li><strong>Sample Interval</strong> — how often (seconds) to send sensor readings.</li>
+  <li><strong>Heartbeat Interval</strong> — how often (seconds) to send a heartbeat to the host.</li>
+</ul>
+
+<h3>Sources</h3>
+<p>Configure additional sensor sources:</p>
+<ul>
+  <li><strong>LSI HBA</strong> — reads temperatures from LSI/Broadcom SAS HBA controllers
+      via <code>/dev/mpt2ctl</code> or <code>/dev/mpt3ctl</code>.</li>
+  <li><strong>SmartCTL</strong> — reads disk temperatures using
+      <code>smartctl</code>.</li>
+</ul>
+
+<h3>Persistent Sensors</h3>
+<p>Define sensors that continue to report a default value even when the
+underlying hardware source is temporarily unavailable (e.g. GPU suspended).
+Each persistent sensor maps to a specific hwmon chip and input.</p>
+
+<h3>Logs</h3>
+<p>Shows the last 80 lines of the agent log for troubleshooting, including
+startup errors, missing virtio device warnings, and agent exit codes.</p>
+
+<h2>Sensor Units</h2>
+<ul>
+  <li>Temperature: milli-°C (65000 = 65 °C)</li>
+  <li>Fan speed: RPM</li>
+  <li>Voltage: milli-volts</li>
+  <li>Current: milli-amperes</li>
+  <li>Power: micro-watts</li>
+</ul>
+</body>
+</html>
